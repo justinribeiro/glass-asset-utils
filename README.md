@@ -6,7 +6,9 @@ Forked and slimmed down from the Android UI Utils project. https://code.google.c
 
 ## Just want to run it?
 
-You can pull the /asset-studio/dist folder and run icons-submission.html.
+Available at: http://glass-asset-utils.appspot.com/icons-submission.html
+
+You can pull the /asset-studio/dist folder and run icons-submission.html locally as well.
 
 ## Requirements to build
 

@@ -38,18 +38,6 @@
 
     <script src="js/asset-studio.pack.js"></script>
 
-    <!-- TODO: remove Analytics tracking if you're building the tools locally! -->
-    <script type="text/javascript">
-      var _gaq = _gaq || [];
-      _gaq.push(['_setAccount', 'UA-18671401-1']);
-      _gaq.push(['_trackPageview']);
-      (function() {
-        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-      })();
-    </script>
-
     <style>
       .out-image-group.dark .label {
         color: #fff;
@@ -80,10 +68,10 @@
         </h3>
       </div>
       <div id="footer">
-        <p>Based on the launcher boilerplates from <a href="http://www.androidicons.com/">androidicons.com</a>, with permission.</p>
-        <p>See the source at the <a href="http://code.google.com/p/android-ui-utils">android-ui-utils</a> Google Code project.</p>
-        <p>All generated art is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/3.0/">Creative Commons Attribution 3.0 Unported License</a>. <a href="attribution.html">Attribution info</a></p>
-      </div>
+	    <p>Image sizes and format based on the <a href="https://developers.google.com/glass/distributing/checklist">Glassware Launch Checklist</a> documentation.</p>
+		<p>Get the source code at the <a href="https://github.com/justinribeiro/glass-asset-utils/">https://github.com/justinribeiro/glass-asset-utils/</a> Github repo.</p>
+        <p>Forked from the source at the <a href="http://code.google.com/p/android-ui-utils">android-ui-utils</a> Google Code project.</p>
+        <p>All generated art is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/3.0/">Creative Commons Attribution 3.0 Unported License</a>. <a href="attribution.html">Attribution info</a></p>      </div>
     </div>
 
     <script>
@@ -120,8 +108,8 @@
         '30x30-Footer-none-targetRect': { x:  0, y:  0, w:  30, h:  30 },
 		'50x50-ok-none-targetRect': { x:  0, y:  0, w:  50, h:  50 },
 		'150x150-activate-none-targetRect': { x:  0, y:  0, w:  150, h:  150 },
-		'40x40-gallery-none-targetRect': { x:  0, y:  0, w:  150, h:  150 },
-		'85x85-gallery-none-targetRect': { x:  0, y:  0, w:  150, h:  150 },
+		'40x40-gallery-none-targetRect': { x:  0, y:  0, w:  40, h:  40 },
+		'85x85-gallery-none-targetRect': { x:  0, y:  0, w:  85, h:  85 },
       };
 
       /**
