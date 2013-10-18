@@ -75,7 +75,7 @@
     </div>
 
     <script>
-      var DENSITIES = {'20x20-Brand':1, '40x40-Brand':1, '30x30-Footer':1, '50x50-ok':1, '150x150-activate':1, '40x40-gallery':1, '85x85-gallery':1};
+      var DENSITIES = {'20x20':1, '30x30':1, '40x40':1, '50x50':1, '150x150':1, '40x40-Gallery':1, '85x85-Gallery':1};
 
       $(studio.checkBrowser);
       imagelib.ALLOW_MANUAL_RESCALE = true;
@@ -95,21 +95,21 @@
         });
 
       var PARAM_RESOURCES = {
-        '20x20-Brand-iconSize': { w: 20, h: 20 },
-        '40x40-Brand-iconSize': { w:  40, h:  40 },
-        '30x30-Footer-iconSize': { w:  30, h:  30 },
-		'50x50-ok-iconSize': { w:  50, h:  50 },
-		'150x150-activate-iconSize': { w:  150, h:  150 },
-		'40x40-gallery-iconSize': { w:  40, h:  40 },
-		'85x85-gallery-iconSize': { w:  85, h:  85 },
+        '20x20-iconSize': { w: 20, h: 20 },
+        '40x40-iconSize': { w:  40, h:  40 },
+        '30x30-iconSize': { w:  30, h:  30 },
+		'50x50-iconSize': { w:  50, h:  50 },
+		'150x150-iconSize': { w:  150, h:  150 },
+		'40x40-Gallery-iconSize': { w:  40, h:  40 },
+		'85x85-Gallery-iconSize': { w:  85, h:  85 },
 
-        '20x20-Brand-none-targetRect': { x: 0, y: 0, w: 20, h: 20 },
-        '40x40-Brand-none-targetRect': { x:  0, y:  0, w:  40, h:  40 },
-        '30x30-Footer-none-targetRect': { x:  0, y:  0, w:  30, h:  30 },
-		'50x50-ok-none-targetRect': { x:  0, y:  0, w:  50, h:  50 },
-		'150x150-activate-none-targetRect': { x:  0, y:  0, w:  150, h:  150 },
-		'40x40-gallery-none-targetRect': { x:  0, y:  0, w:  40, h:  40 },
-		'85x85-gallery-none-targetRect': { x:  0, y:  0, w:  85, h:  85 },
+        '20x20-none-targetRect': { x: 0, y: 0, w: 20, h: 20 },
+        '40x40-none-targetRect': { x:  0, y:  0, w:  40, h:  40 },
+        '30x30-none-targetRect': { x:  0, y:  0, w:  30, h:  30 },
+		'50x50-none-targetRect': { x:  0, y:  0, w:  50, h:  50 },
+		'150x150-none-targetRect': { x:  0, y:  0, w:  150, h:  150 },
+		'40x40-Gallery-none-targetRect': { x:  0, y:  0, w:  40, h:  40 },
+		'85x85-Gallery-none-targetRect': { x:  0, y:  0, w:  85, h:  85 },
       };
 
       /**
@@ -142,55 +142,70 @@
             var outCtx = imagelib.drawing.context(iconSize);
             var tmpCtx = imagelib.drawing.context(iconSize);
 
-            if ((values['foreground'].type == 'text' ||
-                values['foreground'].type == 'clipart') &&
-                values['foreColor'].alpha == 0) {
-              values['foreColor'].alpha = 100;
+            if ((values['foreground'].type == 'text' || values['foreground'].type == 'clipart') && values['galleryIconColor'].alpha == 0) {
+				values['galleryIconColor'].alpha = 100;
             }
 
             if (backgroundShape == 'none') {
               tmpCtx.save();
               tmpCtx.globalCompositeOperation = 'source-over';
 			  
-			  // these two need a background color
-			  if (density == "20x20-Brand" || density == "40x40-Brand") {
-				tmpCtx.fillStyle = values['backColor'].color;
+			  if (density == "40x40-Gallery" || density == "85x85-Gallery") {
+				
+				// Gallery icons can be either on a white background or transparent
+				if (values['galleryBackground'] == false) {
+					tmpCtx.fillStyle = "#ffffff";
+				} else {
+					tmpCtx.fillStyle = "rgba(255,255,255,0)";
+				}
+				
 				tmpCtx.fillRect(0, 0, iconSize.w, iconSize.h);
+				
+				var copyFrom = foreCtx;
+				var foreSize = {
+				  w: foreCtx.canvas.width,
+				  h: foreCtx.canvas.height
+				};
+				
+				var tmpCtx2 = imagelib.drawing.context(foreSize);
+				imagelib.drawing.copy(tmpCtx2, foreCtx, foreSize);
+				tmpCtx2.globalCompositeOperation = 'source-atop';
+				tmpCtx2.fillStyle = values['galleryIconColor'].color;
+				tmpCtx2.fillRect(0, 0, foreSize.w, foreSize.h);
+				copyFrom = tmpCtx2;
+
+				imagelib.drawing[values['crop'] ? 'drawCenterCrop' : 'drawCenterInside']
+				  (tmpCtx, copyFrom, targetRect, {
+					x: 0, y: 0,
+					w: foreSize.w, h: foreSize.h
+				});
+				
+				
+			  } else {
+
+				var copyFrom2 = foreCtx;
+				var foreSize = {
+				  w: foreCtx.canvas.width,
+				  h: foreCtx.canvas.height
+				};
+
+				var tmpCtx3 = imagelib.drawing.context(foreSize);
+				imagelib.drawing.copy(tmpCtx3, foreCtx, foreSize);
+				tmpCtx3.globalCompositeOperation = 'source-atop';
+				tmpCtx3.fillStyle = "#ffffff";
+				tmpCtx3.fillRect(0, 0, foreSize.w, foreSize.h);
+				copyFrom2 = tmpCtx3;
+
+				imagelib.drawing[values['crop'] ? 'drawCenterCrop' : 'drawCenterInside']
+				  (tmpCtx, copyFrom2, targetRect, {
+					x: 0, y: 0,
+					w: foreSize.w, h: foreSize.h
+				});
 			  }
-			  
-              if (foreCtx) {
-                var copyFrom = foreCtx;
-                var foreSize = {
-                  w: foreCtx.canvas.width,
-                  h: foreCtx.canvas.height
-                };
 
-                if (values['foreColor'].alpha) {
-                  var tmpCtx2 = imagelib.drawing.context(foreSize);
-                  imagelib.drawing.copy(tmpCtx2, foreCtx, foreSize);
-                  tmpCtx2.globalCompositeOperation = 'source-atop';
-                  tmpCtx2.fillStyle = values['foreColor'].color;
-                  tmpCtx2.fillRect(0, 0, foreSize.w, foreSize.h);
-                  copyFrom = tmpCtx2;
-                  tmpCtx.globalAlpha = values['foreColor'].alpha / 100;
-                }
-
-                imagelib.drawing[values['crop'] ? 'drawCenterCrop' : 'drawCenterInside']
-                  (tmpCtx, copyFrom, targetRect, {
-                    x: 0, y: 0,
-                    w: foreSize.w, h: foreSize.h
-                  });
-              }
               tmpCtx.restore();
-			  
-              var foreEffect = 1; //values['foreEffect'];
-
-              if (backgroundShape == 'none') {
-                outCtx.drawImage(tmpCtx.canvas, 0, 0);
-
-              } 
-
-            } 
+			  outCtx.drawImage(tmpCtx.canvas, 0, 0);
+			} 
 			
             zipper.add({
               name: 'glass-icons/' + density + '.png',
@@ -221,23 +236,24 @@
             title: 'Foreground',
             defaultValueTrim: 1
           }),
-          new studio.forms.ColorField('foreColor', {
-            title: 'Color',
-            helpText: 'For transparent foregrounds',
-            defaultValue: '#33b5e5',
-            alpha: true,
-            defaultAlpha: 0
-          }),
           new studio.forms.BooleanField('crop', {
             title: 'Scaling',
             defaultValue: false,
             offText: 'Center',
             onText: 'Crop'
           }),
-          new studio.forms.ColorField('backColor', {
-            title: 'Brand Color',
-            defaultValue: '#ffffff'
-          })
+          new studio.forms.BooleanField('galleryBackground', {
+              title: 'Gallery Icon Background',
+              defaultValue: false,
+              offText: 'White',
+              onText: 'Transparent'
+            }),
+          new studio.forms.ColorField('galleryIconColor', {
+            title: 'Gallery Icon Color',
+            helpText: 'Can be Full Color',
+            defaultValue: '#c00',
+            alpha: false
+          }),
 
         ]
       });
